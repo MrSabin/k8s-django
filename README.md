@@ -62,4 +62,5 @@ $ minikube image build -t django_app:latest .
 
 ```shell-session
 $ kubectl apply -f django-deploy.yaml
+$ kubectl apply -f ingress-hosts.yaml
 ```

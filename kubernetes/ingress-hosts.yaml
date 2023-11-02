@@ -1,0 +1,19 @@
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-hosts
+  labels:
+    name: ingress-hosts
+spec:
+  rules:
+  - host: star-burger.test
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: django-port
+            port: 
+              number: 80
