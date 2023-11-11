@@ -1,20 +1,23 @@
 apiVersion: batch/v1
-kind: Job
+kind: CronJob
 metadata:
   name: django-clearsessions
 spec:
-  ttlSecondsAfterFinished: 30
-  template:
+  schedule: "0 0 * * *"
+  jobTemplate:
     spec:
-      containers:
-      - name: django-clearsessions
-        image: django_app:latest
-        imagePullPolicy: IfNotPresent
-        ports:
-          - containerPort: 80
-        envFrom:
-          - configMapRef:
-              name: django-config
-        command: ['python', 'manage.py', 'clearsessions']
-      restartPolicy: Never
+      ttlSecondsAfterFinished: 10
+      template:
+        spec:
+          containers:
+          - name: django-clearsessions
+            image: django_app:latest
+            imagePullPolicy: IfNotPresent
+            ports:
+              - containerPort: 80
+            envFrom:
+              - configMapRef:
+                  name: django-config
+            command: ['python', 'manage.py', 'clearsessions']
+          restartPolicy: OnFailure
 
