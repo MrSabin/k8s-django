@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: django-clearsessions
+spec:
+  ttlSecondsAfterFinished: 30
+  template:
+    spec:
+      containers:
+      - name: django-clearsessions
+        image: django_app:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 80
+        envFrom:
+          - configMapRef:
+              name: django-config
+        command: ['python', 'manage.py', 'clearsessions']
+      restartPolicy: Never
+
