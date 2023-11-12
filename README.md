@@ -41,13 +41,39 @@ $ docker-compose run web ./manage.py createsuperuser
 $ minikube start --vm-driver=virtualbox
 ```
 
-Из корневой директории запустите БД командой
-
+Активируйте плагин Ingress:
 ```shell-session
-$ docker-compose up -d
+$ minikube addons enable ingress
 ```
 
-Создайте .env файл с переменными окружения, указанными выше. С помощью `kubectl` перенесите переменные окружения в ConfigMap внутри кластера:
+Установите Helm (на примере установки скриптом, другие варианты [здесь](https://helm.sh/docs/intro/install/)):
+
+```shell-session
+$ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+$ chmod 700 get_helm.sh
+$ ./get_helm.sh
+```
+
+Добавьте репозиторий Bitnami в Helm:
+
+```shell-session
+$ helm repo add bitnami https://charts.bitnami.com/bitnami 
+```
+
+Установите БД Postgresql в кластер( значения в <> заменить своими):
+
+```shell-session
+$ helm install <release_name> --set auth.postgresPassword=<postgres_password>,auth.username=<username>,auth.password=<user_password>,auth.database=<db_name> bitnami/postgresql
+```
+
+Создайте .env файл с переменными окружения (значения в <> заменить указанными при установке базы данных):
+
+```shell-session
+SECRET_KEY=<секретный_ключ_django>
+DATABASE_URL=postgres://<username>:<user_password>@django-db-postgresql.default.svc.cluster.local:5432/<db_name>
+```
+
+С помощью `kubectl` перенесите переменные окружения в ConfigMap внутри кластера:
 
 ```shell-session
 $ kubectl create configmap django-config --from-env-file=.env
@@ -63,4 +89,5 @@ $ minikube image build -t django_app:latest .
 ```shell-session
 $ kubectl apply -f django-deploy.yaml
 $ kubectl apply -f ingress-hosts.yaml
+$ kubectl apply -f django-clearsessions.yaml
 ```
