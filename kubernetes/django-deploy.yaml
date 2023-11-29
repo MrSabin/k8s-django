@@ -36,8 +36,6 @@ spec:
       - name: django-clearsessions
         image: django_app:latest
         imagePullPolicy: IfNotPresent
-        ports:
-          - containerPort: 80
         envFrom:
           - configMapRef:
               name: django-config
