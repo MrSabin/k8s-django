@@ -21,8 +21,8 @@ spec:
         ports:
           - containerPort: 80
         envFrom:
-          - configMapRef:
-              name: django-config
+          - secretRef:
+              name: django-secrets
 ---
 apiVersion: batch/v1
 kind: Job
@@ -37,8 +37,8 @@ spec:
         image: django_app:latest
         imagePullPolicy: IfNotPresent
         envFrom:
-          - configMapRef:
-              name: django-config
+          - secretRef:
+              name: django-secrets
         command: ['python', 'manage.py', 'migrate', '--no-input']
       restartPolicy: OnFailure
 ---

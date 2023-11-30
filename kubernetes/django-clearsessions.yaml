@@ -15,8 +15,8 @@ spec:
             image: django_app:latest
             imagePullPolicy: IfNotPresent
             envFrom:
-              - configMapRef:
-                  name: django-config
+              - secretRef:
+                  name: django-secrets
             command: ['python', 'manage.py', 'clearsessions']
           restartPolicy: OnFailure
 

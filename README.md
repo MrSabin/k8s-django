@@ -69,6 +69,8 @@ $ helm install <release_name> --set auth.postgresPassword=<postgres_password>,au
 Создайте .env файл с переменными окружения (значения в <> заменить указанными при установке базы данных):
 
 ```shell-session
+DEBUG=False
+ALLOWED_HOSTS=[<список разрешенных хостов>]
 SECRET_KEY=<секретный_ключ_django>
 DATABASE_URL=postgres://<username>:<user_password>@django-db-postgresql.default.svc.cluster.local:5432/<db_name>
 ```
@@ -76,7 +78,7 @@ DATABASE_URL=postgres://<username>:<user_password>@django-db-postgresql.default.
 С помощью `kubectl` перенесите переменные окружения в ConfigMap внутри кластера:
 
 ```shell-session
-$ kubectl create configmap django-config --from-env-file=.env
+$ kubectl create secret generic django-secrets --from-env-file=.env
 ```
 Из директории `backend_main_django` внутри репозитория запустить создание образа:
 
@@ -91,3 +93,17 @@ $ kubectl apply -f django-deploy.yaml
 $ kubectl apply -f ingress-hosts.yaml
 $ kubectl apply -f django-clearsessions.yaml
 ```
+
+Открыть сайт можно перейдя по IP-адресу minikube. Для того, чтобы узнать IP, выполните команду
+
+```shell-session
+$ minikube ip
+```
+
+Для упрощения перехода на сайт можно задать локальный домен для данного IP-адреса. Для этого внесите адрес и домен в файл `/etc/hosts`, например:
+
+```shell-session
+192.168.59.100	star-burger.test
+```
+
+Сайт будет доступен по адресу [star-burger.test](star-burger.test).
