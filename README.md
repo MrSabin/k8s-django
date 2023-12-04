@@ -75,7 +75,7 @@ SECRET_KEY=<секретный_ключ_django>
 DATABASE_URL=postgres://<username>:<user_password>@django-db-postgresql.default.svc.cluster.local:5432/<db_name>
 ```
 
-С помощью `kubectl` перенесите переменные окружения в ConfigMap внутри кластера:
+С помощью `kubectl` перенесите переменные окружения в Secrets внутри кластера:
 
 ```shell-session
 $ kubectl create secret generic django-secrets --from-env-file=.env
