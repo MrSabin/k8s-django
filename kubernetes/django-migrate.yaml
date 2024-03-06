@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: django-migrate
+spec:
+  ttlSecondsAfterFinished: 10
+  template:
+    spec:
+      containers:
+      - name: django-clearsessions
+        image: django_app:latest
+        imagePullPolicy: IfNotPresent
+        envFrom:
+          - secretRef:
+              name: django-secrets
+        command: ['python', 'manage.py', 'migrate', '--no-input']
+      restartPolicy: OnFailure

@@ -89,9 +89,7 @@ $ minikube image build -t django_app:latest .
 Из директории `kubernetes` запустите сайт:
 
 ```shell-session
-$ kubectl apply -f django-deploy.yaml
-$ kubectl apply -f ingress-hosts.yaml
-$ kubectl apply -f django-clearsessions.yaml
+$ kubectl apply -f .
 ```
 
 Открыть сайт можно перейдя по IP-адресу minikube. Для того, чтобы узнать IP, выполните команду
