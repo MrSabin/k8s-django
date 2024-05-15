@@ -86,7 +86,7 @@ $ kubectl create secret generic django-secrets --from-env-file=.env
 $ minikube image build -t django_app:latest .
 ```
 
-Из директории `kubernetes` запустите сайт:
+Из директории `deploy/local-minikube-virtualbox` запустите сайт:
 
 ```shell-session
 $ kubectl apply -f .
