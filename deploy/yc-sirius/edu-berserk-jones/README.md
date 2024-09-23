@@ -28,13 +28,22 @@ yc init
 yc managed-kubernetes cluster get-credentials --id <идентификатор_кластера> --external
 ```
 
-6. Остается лишь выбрать пространство имен для работы, либо явно указывать `namespace` в конфигах.
+6. Выбираем пространство имен для работы, либо явно указываем `namespace` в конфигах.
 
 ```bash
 kubectl config set-context --current --namespace=<insert-namespace-name-here>
 ```
 
-7. Запускаем проект:
+7. Скачиваем сертификат Яндекс.Облака и заворачиваем его в секрет k8s для подгрузки к подам:
+
+```bash
+wget "https://storage.yandexcloud.net/cloud-certs/CA.pem" \
+--output-document root.crt && \
+chmod 0600 root.crt && \
+kubectl create secret generic <имя_секрета> --from-file=root.crt
+```
+
+8. Запускаем проект:
 
 ```bash
 kubectl apply -f .
