@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-deployment
+  labels:
+    app: django-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: django
+  template:
+    metadata:
+      labels:
+        app: django
+    spec:
+      containers:
+      - name: django-app
+        image: mrsabin/django-app:5bbd250
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 80
+        envFrom:
+          - secretRef:
+              name: django-secrets
+        volumeMounts:
+          - name: secret-volume
+            mountPath: /root/.postgresql
+            readOnly: true
+      volumes:
+        - name: secret-volume
+          secret:
+            secretName: my-secret
