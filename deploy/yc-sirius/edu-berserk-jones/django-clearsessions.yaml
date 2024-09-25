@@ -12,7 +12,7 @@ spec:
         spec:
           containers:
           - name: django-clearsessions
-            image: django_app:latest
+            image: mrsabin/django-app:latest
             imagePullPolicy: IfNotPresent
             envFrom:
               - secretRef:

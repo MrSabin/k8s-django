@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: django-migrate-superuser
+spec:
+  ttlSecondsAfterFinished: 10
+  template:
+    spec:
+      containers:
+      - name: django-migrate-superuser
+        image: mrsabin/django-app:latest
+        imagePullPolicy: IfNotPresent
+        envFrom:
+          - secretRef:
+              name: django-secrets
+        command: ["/bin/bash", "-c"]
+        args:
+          - |
+            python manage.py createsuperuser --no-input
+            python manage.py migrate --no-input
+      restartPolicy: OnFailure

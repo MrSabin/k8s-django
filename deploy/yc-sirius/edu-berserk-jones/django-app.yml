@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: django-app
-        image: mrsabin/django-app:5bbd250
+        image: mrsabin/django-app:latest
         imagePullPolicy: IfNotPresent
         ports:
           - containerPort: 80
